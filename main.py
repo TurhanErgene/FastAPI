@@ -1,6 +1,7 @@
 # http://127.0.0.1:8000/docs # http://127.0.0.1:8000/redoc
 from typing import Optional
 from fastapi import FastAPI
+from pydantic import BaseModel
 
 app = FastAPI()  # uvicorn main:app --reload
 
@@ -32,3 +33,14 @@ def show(id: int):
 @app.get('/blog/{id}/comments')
 def comments(id, limit = 10):
     return {'data': {'comments': 'comment 1'}}
+
+
+class Blog(BaseModel):
+    title: str
+    body: str
+    published: Optional[bool]
+
+@app.post('/blog')
+def create_blog(request: Blog): # request is a Blog object and it can be named as blog instead
+    return {'data': f'Blog is created with title as {request.title}'}
+
