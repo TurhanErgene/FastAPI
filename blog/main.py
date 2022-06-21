@@ -26,6 +26,20 @@ def create(request: schemas.Blog, db: Session = Depends(get_db)):
     db.refresh(new_blog)
     return new_blog
 
+@app.delete("/blog{id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete(id: int, db: Session = Depends(get_db)):
+    blog = db.query(models.Blog).filter(models.Blog.id == id).delete(synchronize_session=False)
+    db.commit()
+    if not blog:
+        raise HTTPException(status_code=404, detail=f"Blog with the id: {id} has not found")
+    else:
+        return 'Blog deleted' 
+    
+
+@app.update("/blog{id}", status_code=status.HTTP_202_ACCEPTED)
+def update(id: int, request: schemas.Blog, db: Session = Depends(get_db)):
+
+
 
 @app.get("/blog/")
 def all(db: Session = Depends(get_db)):
