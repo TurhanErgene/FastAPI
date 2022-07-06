@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends, Response, status, HTTPException
-from . import schemas, models
-from .database import engine, SessionLocal
+import schemas, models
+from database import engine, SessionLocal
 from sqlalchemy.orm import Session
 from typing import List
 from passlib.context import CryptContext
